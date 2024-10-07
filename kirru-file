@@ -1,0 +1,23 @@
+---
+- name: Install Nginx on servers
+  hosts: webservers
+  become: yes  # To run tasks with sudo
+  tasks:
+    - name: Ensure Nginx is installed
+      apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure Nginx is installed on RedHat-based systems
+      yum:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Start and enable Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
